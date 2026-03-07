@@ -3,7 +3,7 @@ import {
   createProduct,
   getProducts,
   updateProduct,
-} from "../controllers/ProductController";
+} from "../controllers/ProductController.js";
 import fileUpload from "express-fileupload";
 
 const router = express.Router();

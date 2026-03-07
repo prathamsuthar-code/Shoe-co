@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import mongoose from "mongoose";
 
+console.log("asdad", path.join(process.cwd(), "public", "uploads", "products"));
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -79,6 +80,10 @@ export const createProduct = async (req, res) => {
           "products",
           fileName,
         );
+
+        if (!fs.existsSync(uploadPath)) {
+          fs.mkdirSync(uploadPath, { recursive: true });
+        }
 
         // move file
         await image.mv(uploadPath);
