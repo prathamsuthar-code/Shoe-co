@@ -81,8 +81,15 @@ export const createProduct = async (req, res) => {
           fileName,
         );
 
-        if (!fs.existsSync(uploadPath)) {
-          fs.mkdirSync(uploadPath, { recursive: true });
+        const folderName = path.join(
+          process.cwd(),
+          "public",
+          "uploads",
+          "products",
+        );
+
+        if (!fs.existsSync(folderName)) {
+          fs.mkdirSync(folderName, { recursive: true });
         }
 
         // move file
