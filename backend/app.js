@@ -7,11 +7,12 @@ import path from "path";
 
 const app = express();
 dotenv.config();
+// console.log("path.join(process.cwd(),", path.join(process.cwd(), "public"));
 
 app.use(cors());
 app.use(express.json());
 
-app.use(`/uploads`, express.static(path.join(process.cwd(), "public")));
+app.use(`/public`, express.static(path.join(process.cwd(), "public")));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRouter);

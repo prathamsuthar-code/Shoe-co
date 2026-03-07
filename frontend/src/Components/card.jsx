@@ -5,6 +5,9 @@ import { useCart } from "../Context/CartContext";
 const Card = ({ product }) => {
   const { addToCart } = useCart();
 
+  const path = import.meta.env.VITE_API_URL_IMAGE;
+
+  console.log("path", path, "12312", path + product?.images?.[0]?.path);
   // console.log(cartItem)
   return (
     <div className="max-w-60 ">
@@ -13,7 +16,7 @@ const Card = ({ product }) => {
           {/* <div className=' p-4 w-4 bg-white'></div> */}
           <div className=" w-full justify-center relative">
             <img
-              src={product?.images?.[0]?.path}
+              src={path + product?.images?.[0]?.path}
               alt=""
               className="rounded-xl h-62 w-full object-cover object-center"
             />
