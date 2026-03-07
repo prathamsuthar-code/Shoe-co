@@ -178,7 +178,7 @@ export const updateProduct = async (req, res) => {
           process.cwd(),
           "public",
           "uploads",
-          "products",
+          "product",
           fileName,
         );
 
