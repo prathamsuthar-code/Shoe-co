@@ -9,4 +9,9 @@ export const registerValidations = z.object({
  
 })
 
+export const loginValidations = z.object({
+    email : z.email( {message : "must be valid email"}),
+    password : z.string({message : "miust be type of string"}).min(7 , {message : "atleast 2 characters long"}).max(16 , "cannot exceed 16 characters"),
+ 
+})
 

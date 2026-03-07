@@ -4,11 +4,13 @@ import dotenv from 'dotenv'
 import {User} from './models/User.model.js'
 import { registerValidations } from './validations/user.validation.js';
 import { refineValidationsObject } from './utils/helper.js';
+import cors from 'cors'
 // 
 dotenv.config();
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 
 

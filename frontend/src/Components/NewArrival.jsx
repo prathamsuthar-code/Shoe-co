@@ -19,9 +19,9 @@ const Newarrival = () => {
           </p>
       </div>
       <div className='w-full flex gap-6 overflow-x-auto scroll-smooth no-scrollbar'>
-        {newArrivalProducts.map((product)  => (
+        {newArrivalProducts.map((product , index)  => (
         <div className="min-w-70">
-          <Card product={product}/>
+          <Card product={product} key={product.id}/>
         </div>
         ))}
       </div>

@@ -8,11 +8,15 @@ import Navbar from "./Components/navbar"
 import Footer from "./Components/footer"
 import OrderConfirmed from "./Pages/OrderConfirmed"
 import Signup from "./Pages/Signup"
+import Signin from "./Pages/Signin"
+import { useState } from "react"
+
 
 function App() {
+      const [isLoggedin, setIsLoggedIn] = useState(localStorage.getItem("access_token"))
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar isLoggedin={isLoggedin} setIsLoggedIn={setIsLoggedIn} />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -21,7 +25,8 @@ function App() {
         <Route path="/Contact" element={<Contact />} />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/OrderConfirmed" element={<OrderConfirmed />} />
-        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/Signin" element={<Signin setIsLoggedIn={setIsLoggedIn} />} />
       </Routes>
 
       <Footer />
