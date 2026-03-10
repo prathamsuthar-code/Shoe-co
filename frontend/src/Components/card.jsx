@@ -19,6 +19,9 @@ const Card = ({ product }) => {
               src={path + product?.images?.[0]?.path}
               alt=""
               className="rounded-xl h-62 w-full object-cover object-center"
+              onError={(e) => 
+              e.target.src = "/Productfallback.png"
+              }
             />
             {/* <button className='absolute rounded-full top-2 right-2 bg-white/80 backdrop-blur-sm p-1.5  text-gray-600 hover:text-red-500 hover:bg-white transition-all shadow-sm'> <Heart /></button> */}
           </div>
