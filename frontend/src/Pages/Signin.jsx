@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../Context/CartContext";
 
 const SignIn = ({setIsLoggedIn}) => {
 
   const navigate = useNavigate();
+  const { loginUser } = useCart()
 
   const [formData, setFormData] = useState({
     email: "",
@@ -44,11 +46,17 @@ const SignIn = ({setIsLoggedIn}) => {
         localStorage.setItem("access_token", res.data.token);
       }
 
-      // save user
       if (res.data?.user) {
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-      }
 
+     localStorage.setItem("user", JSON.stringify(res.data.user));
+
+       // Save userId for cart
+        localStorage.setItem("userId", res.data.user.id);
+
+        // Notify CartContext
+        loginUser(res.data.user.id);
+
+      }
       console.log("Login success:", res.data);
 
       navigate("/");

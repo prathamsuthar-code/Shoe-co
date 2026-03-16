@@ -1,12 +1,13 @@
 
 import { ShoppingCart, User } from 'lucide-react'
-
 import { NavLink } from 'react-router-dom'
 import { useCart } from "../Context/CartContext"
 
 
+
 const Navbar = ({isLoggedin , setIsLoggedIn}) => {
-    const { cartItem } = useCart()
+    const { cartItem, clearCart } = useCart()
+    const { logoutUser } = useCart()
 
     console.log("isLoggedin" , isLoggedin)
   return (
@@ -40,7 +41,7 @@ const Navbar = ({isLoggedin , setIsLoggedIn}) => {
     <div className="absolute right-0 mt-3 w-40 bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50">
       
       <NavLink
-        to="/profile"
+        to="/Profile"
         className="block px-4 py-2 hover:bg-gray-100"
       >
         My Profile
@@ -55,8 +56,8 @@ const Navbar = ({isLoggedin , setIsLoggedIn}) => {
 
       <button
         onClick={() => {
-          localStorage.removeItem("access_token")
-          setIsLoggedIn("")
+         logoutUser()
+         setIsLoggedIn("")
         }}
         className="text-red-500 block w-full text-left px-4 py-2 hover:bg-red-100"
       >

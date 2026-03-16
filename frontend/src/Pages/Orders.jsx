@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react"
 
-const MyOrders = () => {
+const Orders = () => {
 
-  const [orders, setOrders] = useState([]);
-  const navigate = useNavigate();
+  const [orders, setOrders] = useState([])
+
+  const userId = localStorage.getItem("userId")
 
   useEffect(() => {
 
@@ -13,68 +12,71 @@ const MyOrders = () => {
 
       try {
 
-        const res = await axios.get(
-          "http://localhost:8000/api/orders",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          }
-        );
+        const res = await fetch(`http://localhost:8000/api/order/${userId}`)
+        const data = await res.json()
 
-        setOrders(res.data);
+        setOrders(data)
 
       } catch (error) {
-
-        console.log(error);
-
+        console.log(error)
       }
 
-    };
+    }
 
-    fetchOrders();
+    fetchOrders()
 
-  }, []);
+  }, [])
 
   return (
+    <div className="p-10">
 
-    <div style={{ padding: "40px" }}>
+      <h1 className="text-3xl font-bold mb-6">My Orders</h1>
 
-      <h2>My Orders</h2>
+      {orders.length === 0 && (
+        <p>No orders found</p>
+      )}
 
-      {orders.map(order => (
+      {orders.map((order) => (
 
-        <div
-          key={order._id}
-          style={{
-            border: "1px solid #ccc",
-            padding: "15px",
-            marginBottom: "10px"
-          }}
-        >
+  <div key={order._id} className="border rounded-xl p-6 mb-6">
 
-          <p><strong>Order ID:</strong> {order._id}</p>
-
-          <p><strong>Total:</strong> ${order.totalAmount}</p>
-
-          <p><strong>Status:</strong> {order.status}</p>
-
-          <button
-            onClick={() =>
-              navigate(`/orders/${order._id}`)
-            }
-          >
-            View Details
-          </button>
-
-        </div>
-
-      ))}
-
+    <div className="flex justify-between mb-2">
+      <span className="font-semibold">Order ID</span>
+      <span>{order._id}</span>
     </div>
 
-  );
+    <div className="flex justify-between mb-2">
+      <span>Order Date</span>
+      <span>
+        {new Date(order.createdAt).toLocaleDateString()}
+      </span>
+    </div>
 
-};
+    <div className="flex justify-between mb-4">
+      <span>Status</span>
 
-export default MyOrders;
+      <span className="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm">
+        {order.status}
+      </span>
+    </div>
+
+    {order.items.map((item) => (
+      <div key={item.productId} className="flex justify-between mb-2">
+        <span>{item.productName}</span>
+        <span>${item.price}</span>
+      </div>
+    ))}
+
+    <div className="mt-3 font-bold">
+      Total: ${order.totalPrice}
+    </div>
+
+  </div>
+
+))}
+
+    </div>
+  )
+}
+
+export default Orders 

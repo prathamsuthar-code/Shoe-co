@@ -4,11 +4,11 @@ import { Trash } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
 const Cart = () => {
-  const { cartItem } = useCart()
+  const { cartItem, removeFromCart } = useCart()
 console.log(cartItem)
 
  const totalPrice = cartItem.reduce(
-  (total, item) => total + item.sellingPrice,
+  (total, item) => total + item.price,
   0
 )
   return (
@@ -22,9 +22,9 @@ console.log(cartItem)
       ) : (
         
         <div className=" w-2/3 space-y-6">
-          {cartItem.map((item, index) => (
+          {cartItem.map((item) => (
             <div
-              key={index}
+              key={item._id}
               className="flex items-center gap-6 border border-gray-300 p-4 rounded-xl"
             >
               <img
@@ -43,10 +43,10 @@ console.log(cartItem)
                 </p>
 
                 <p className="text-lg font-bold mt-2">
-                  ${item.sellingPrice}
+                  ${item.price || item.sellingPrice}
                 </p>
               </div>
-              <span >
+              <span onClick={() => removeFromCart(item._id)}>
                 <Trash className='text-red-500'/>
               </span>
               
@@ -75,7 +75,11 @@ console.log(cartItem)
 
         </div>
         
-        <NavLink to='/OrderConfirmed'><button className='bg-white hover:bg-[#002b64] hover:text-white px-5 py-2 rounded-xl'>Proceed to Checkout</button></NavLink>
+        <NavLink to="/checkout">
+          <button className="bg-white hover:bg-[#002b64] hover:text-white px-5 py-2 rounded-xl">
+              Proceed to Checkout
+          </button>
+        </NavLink>
         
       </div>
     </div>

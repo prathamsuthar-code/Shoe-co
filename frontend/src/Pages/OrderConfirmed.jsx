@@ -1,20 +1,15 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-
 const OrderConfirmed = () => {
   return (
-    <div className=' flex w-full h-screen items-center '>
-        <div className='mx-auto space-y-5'>
+    <div className="flex flex-col items-center justify-center h-[60vh]">
 
-            <h1 className='text-2xl font-bold items-center'>Order Confirmed</h1>
-            <button className='px-6 py-2 bg-[#002b64] font-semibold text-white rounded-xl'>
-                <NavLink to='/Products'>
-                    Continue Shopping
-                </NavLink>
-            </button>
-        
-        </div>
-        
+      <h1 className="text-3xl font-bold text-green-600">
+        🎉 Order Placed Successfully
+      </h1>
+
+      <p className="mt-4 text-gray-600">
+        Your order has been placed and will be shipped soon.
+      </p>
+
     </div>
   )
 }

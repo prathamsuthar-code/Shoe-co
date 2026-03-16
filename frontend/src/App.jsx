@@ -9,6 +9,8 @@ import Cart from "./Pages/Cart"
 import OrderConfirmed from "./Pages/OrderConfirmed"
 import Signup from "./Pages/Signup"
 import Signin from "./Pages/Signin"
+import Orders from "./Pages/Orders"
+import Profile from "./Pages/Profile"
 
 import Navbar from "./Components/navbar"
 import Footer from "./Components/footer"
@@ -20,8 +22,9 @@ import Dashboard from "./Admin/Pages/Dashboard"
 import Users from "./Admin/Pages/Users"
 import AdminProducts from "./Admin/Pages/Products"
 import AddProduct from "./Admin/Pages/AddProduct"
-import Orders from "./Admin/Pages/Orders"
+import AdminOrders from "./Admin/Pages/Orders"
 import OrderDetail from "./Admin/Pages/OrderDetail"
+import Checkout from "./Pages/CheckOut"
 
 function App() {
 
@@ -44,6 +47,9 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/orderconfirmed" element={<OrderConfirmed />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/Profile" element={<Profile />} />
         <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/signin" element={<Signin setIsLoggedIn={setIsLoggedIn} />} />
 
@@ -59,9 +65,11 @@ function App() {
 
          <Route path="products/add" element={<AddProduct />} />
 
-         <Route path="orders" element={<Orders />} />
+         <Route path="orders" element={<AdminOrders />} />
 
          <Route path="orders/:id" element={<OrderDetail />} />
+
+         
 
       </Route>
 

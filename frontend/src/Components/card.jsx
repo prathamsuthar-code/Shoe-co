@@ -16,7 +16,7 @@ const Card = ({ product }) => {
           {/* <div className=' p-4 w-4 bg-white'></div> */}
           <div className=" w-full justify-center relative">
             <img
-              src={path + product?.images?.[0]?.path}
+              src={ product.img}
               alt=""
               className="rounded-xl h-62 w-full object-cover object-center"
               onError={(e) => 
@@ -43,9 +43,9 @@ const Card = ({ product }) => {
         <div className="flex justify-center">
           <button
             className=" rounded-xl w-full mt-1 mb-1 py-2 bg-blue-800 hover:bg-blue-950 transition-colors text-white items-center"
-            onClick={() => {
-              addToCart(product);
-            }}
+            onClick={() => 
+              addToCart(product)
+            }
           >
             Add To Cart
           </button>
