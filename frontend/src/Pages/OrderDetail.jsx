@@ -1,74 +1,127 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 
-const OrderDetails = () => {
+const OrderDetail = () => {
 
-  const { id } = useParams();
-
-  const [order, setOrder] = useState(null);
+  const { id } = useParams()
+  const [order, setOrder] = useState(null)
 
   useEffect(() => {
 
     const fetchOrder = async () => {
 
-      try {
+      const res = await fetch(`http://localhost:8000/api/order/details/${id}`)
+      const data = await res.json()
 
-        const res = await axios.get(
-          `http://localhost:8000/api/orders/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          }
-        );
+      setOrder(data)
 
-        setOrder(res.data);
+    }
 
-      } catch (error) {
+    fetchOrder()
 
-        console.log(error);
+  }, [id])
 
-      }
-
-    };
-
-    fetchOrder();
-
-  }, [id]);
-
-  if (!order) return <p>Loading...</p>;
+  if (!order) return <p className="p-10">Loading...</p>
 
   return (
+    <div className="p-10 max-w-6xl mx-auto">
 
-    <div style={{ padding: "40px" }}>
+      <h1 className="text-3xl font-bold mb-8">
+        Order Details
+      </h1>
 
-      <h2>Order Details</h2>
+      {/* ORDER INFO + SHIPPING GRID */}
+      <div className="grid grid-cols-2 gap-6 mb-8">
 
-      <p><strong>Order ID:</strong> {order._id}</p>
+        {/* ORDER INFO */}
+        <div className="bg-white shadow rounded-xl p-6">
 
-      <p><strong>Status:</strong> {order.status}</p>
+          <h2 className="text-xl font-semibold mb-4">
+            Order Information
+          </h2>
 
-      <p><strong>Total:</strong> ${order.totalAmount}</p>
+          <p>
+            <strong>Order ID:</strong> {order._id}
+          </p>
 
-      <h3>Products</h3>
+          <p>
+            <strong>Date:</strong>{" "}
+            {new Date(order.createdAt).toLocaleDateString()}
+          </p>
 
-      {order.items.map(item => (
+          <p>
+            <strong>Status:</strong>{" "}
+            <span className="bg-yellow-200 px-3 py-1 rounded-full text-sm">
+              {order.status}
+            </span>
+          </p>
 
-        <div key={item._id}>
-
-          <p>{item.product.name}</p>
-          <p>Qty: {item.quantity}</p>
-          <p>Price: ${item.price}</p>
+          <p className="mt-2 font-bold">
+            Total: ${order.totalPrice}
+          </p>
 
         </div>
 
-      ))}
+
+        {/* SHIPPING ADDRESS */}
+        <div className="bg-white shadow rounded-xl p-6">
+
+          <h2 className="text-xl font-semibold mb-4">
+            Shipping Address
+          </h2>
+
+          <p>{order.shipping.name}</p>
+          <p>{order.shipping.phone}</p>
+          <p>{order.shipping.address}</p>
+          <p>
+            {order.shipping.city} - {order.shipping.pincode}
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* ORDER ITEMS */}
+      <div className="bg-white shadow rounded-xl p-6">
+
+        <h2 className="text-xl font-semibold mb-6">
+          Ordered Items
+        </h2>
+
+        {order.items.map((item) => (
+
+          <div
+            key={item.productId}
+            className="flex items-center justify-between border-b py-4"
+          >
+
+            <div className="flex items-center gap-4">
+
+              <img
+                src={item.img}
+                alt={item.productName}
+                className="w-16 h-16 object-cover rounded"
+              />
+
+              <span className="font-medium">
+                {item.productName}
+              </span>
+
+            </div>
+
+            <span className="font-semibold">
+              ${item.price}
+            </span>
+
+          </div>
+
+        ))}
+
+      </div>
 
     </div>
+  )
+}
 
-  );
-
-};
-
-export default OrderDetails;
+export default OrderDetail

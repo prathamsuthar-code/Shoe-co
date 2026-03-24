@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import { NavLink } from "react-router-dom"
 
-const Orders = () => {
+const Orderslist = () => {
 
   const [orders, setOrders] = useState([])
 
@@ -10,16 +11,10 @@ const Orders = () => {
 
     const fetchOrders = async () => {
 
-      try {
+      const res = await fetch(`http://localhost:8000/api/order/${userId}`)
+      const data = await res.json()
 
-        const res = await fetch(`http://localhost:8000/api/order/${userId}`)
-        const data = await res.json()
-
-        setOrders(data)
-
-      } catch (error) {
-        console.log(error)
-      }
+      setOrders(data)
 
     }
 
@@ -28,55 +23,65 @@ const Orders = () => {
   }, [])
 
   return (
+
     <div className="p-10">
 
-      <h1 className="text-3xl font-bold mb-6">My Orders</h1>
+      <h1 className="text-3xl font-bold mb-6">
+        My Orders
+      </h1>
 
-      {orders.length === 0 && (
-        <p>No orders found</p>
-      )}
+      <div className="grid grid-cols-3 gap-6">
 
-      {orders.map((order) => (
+        {orders.map((order) => (
 
-  <div key={order._id} className="border rounded-xl p-6 mb-6">
+          <div
+            key={order._id}
+            className="border rounded-xl p-6 shadow-sm bg-white"
+          >
 
-    <div className="flex justify-between mb-2">
-      <span className="font-semibold">Order ID</span>
-      <span>{order._id}</span>
-    </div>
+            <p className="text-sm text-gray-500 mb-2">
+              Order ID
+            </p>
 
-    <div className="flex justify-between mb-2">
-      <span>Order Date</span>
-      <span>
-        {new Date(order.createdAt).toLocaleDateString()}
-      </span>
-    </div>
+            <p className="font-semibold text-sm mb-4">
+              {order._id}
+            </p>
 
-    <div className="flex justify-between mb-4">
-      <span>Status</span>
+            <p className="text-sm text-gray-500">
+              Date
+            </p>
 
-      <span className="bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm">
-        {order.status}
-      </span>
-    </div>
+            <p className="mb-4">
+              {new Date(order.createdAt).toLocaleDateString()}
+            </p>
 
-    {order.items.map((item) => (
-      <div key={item.productId} className="flex justify-between mb-2">
-        <span>{item.productName}</span>
-        <span>${item.price}</span>
+            <p className="text-sm text-gray-500">
+              Status
+            </p>
+
+            <p className="mb-4 text-yellow-600 font-medium">
+              {order.status}
+            </p>
+
+            <p className="font-bold mb-4">
+              Total: ${order.totalPrice}
+            </p>
+
+            <NavLink to={`/orders/${order._id}`}>
+              <button className="bg-[#002b64] text-white px-4 py-2 rounded w-full">
+                View Details
+              </button>
+            </NavLink>
+
+          </div>
+
+        ))}
+
       </div>
-    ))}
-
-    <div className="mt-3 font-bold">
-      Total: ${order.totalPrice}
-    </div>
-
-  </div>
-
-))}
 
     </div>
+
   )
 }
 
-export default Orders 
+export default Orderslist

@@ -1,6 +1,7 @@
 import { Heart, Star } from "lucide-react";
 import React from "react";
-import { useCart } from "../Context/CartContext";
+import { useCart } from "../Context/CartContext"
+import { Link } from "react-router-dom";
 
 const Card = ({ product }) => {
   const { addToCart } = useCart();
@@ -15,6 +16,7 @@ const Card = ({ product }) => {
         <div className="rounded-xl w-full bg-gray-200 outline-1 outline-[#f4f4f4] ">
           {/* <div className=' p-4 w-4 bg-white'></div> */}
           <div className=" w-full justify-center relative">
+            <Link to={`/products/${product.id}`}>
             <img
               src={ product.img}
               alt=""
@@ -23,6 +25,8 @@ const Card = ({ product }) => {
               e.target.src = "/Productfallback.png"
               }
             />
+            </Link>
+            
             {/* <button className='absolute rounded-full top-2 right-2 bg-white/80 backdrop-blur-sm p-1.5  text-gray-600 hover:text-red-500 hover:bg-white transition-all shadow-sm'> <Heart /></button> */}
           </div>
         </div>

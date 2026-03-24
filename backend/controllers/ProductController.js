@@ -18,20 +18,20 @@ export const getProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, brandName, mrp, sellingPrice, isNewArrival } =
+    const { name, description, brandName, sellingPrice, isNewArrival } =
       req.body;
 
-    if (!name || !mrp || !sellingPrice) {
+    if (!name  || !sellingPrice) {
       return res.status(400).json({
         success: false,
-        message: "Name, MRP and sellingPrice are required",
+        message: "Name and sellingPrice are required",
       });
     }
 
     let imagePaths = [];
 
-    if (req.files && req.files.images) {
-      let images = req.files.images;
+    if (req.files && req.files.image) {
+      let images = req.files.image;
 
       // convert to array if single image
       if (!Array.isArray(images)) {
@@ -106,7 +106,7 @@ export const createProduct = async (req, res) => {
       isNewArrival,
       description,
       brandName,
-      mrp,
+      // mrp,
       sellingPrice,
       images: imagePaths,
     });
@@ -146,7 +146,7 @@ export const updateProduct = async (req, res) => {
       });
     }
 
-    const { name, description, brandName, mrp, sellingPrice, isNewArrival } =
+    const { name, description, brandName, sellingPrice, isNewArrival } =
       req.body;
 
     let imagePaths = product.images;
@@ -213,13 +213,14 @@ export const updateProduct = async (req, res) => {
       imagePaths = newImagePaths;
     }
 
-    product.name = name ?? product.name;
-    product.description = description ?? product.description;
-    product.brandName = brandName ?? product.brandName;
-    product.mrp = mrp ?? product.mrp;
-    product.sellingPrice = sellingPrice ?? product.sellingPrice;
+  
+    product.name = name;
+    product.description = description ;
+    product.brandName = brandName ;
+    // product.mrp = mrp ?? product.mrp;
+    product.sellingPrice = sellingPrice;
     product.images = imagePaths;
-    product.isNewArrival = isNewArrival ?? product.isNewArrival;
+    product.isNewArrival = isNewArrival;
 
     await product.save();
 
