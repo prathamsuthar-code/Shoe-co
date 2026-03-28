@@ -39,7 +39,7 @@ function App() {
 
       <Routes>
 
-        {/* CUSTOMER ROUTES WITH HEADER + FOOTER */}
+        
         <Route element={<MainLayout isLoggedin={isLoggedin} setIsLoggedIn={setIsLoggedIn} />}>
 
           <Route path="/" element={<Home />} />
@@ -56,11 +56,11 @@ function App() {
 
         </Route>
 
-        {/* AUTH (NO HEADER/FOOTER) */}
+        
         <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/signin" element={<Signin setIsLoggedIn={setIsLoggedIn} />} />
 
-        {/* ADMIN (NO HEADER/FOOTER) */}
+        
         <Route path="/admin" element={<AdminLayout />}>
 
           <Route path="dashboard" element={<Dashboard />} />
