@@ -1,24 +1,15 @@
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-
-import 'swiper/css';
-
 const Banner = () => {
   return (
-    
-    <Swiper
-      spaceBetween={50}
-      slidesPerView={1}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={(swiper) => console.log(swiper)}
-    >
-      <SwiperSlide> <img src="/JORDAN-Coolfrze.png" alt="" className='w-full h-150 object-cover'/> </SwiperSlide>
-      <SwiperSlide> <img src="/JORDAN-Coolfrze.png" alt="" className='w-full h-150 object-cover'/></SwiperSlide>
-      <SwiperSlide> <img src="/JORDAN-Coolfrze.png" alt="" className='w-full h-150 object-cover'/></SwiperSlide>
-      <SwiperSlide> <img src="/JORDAN-Coolfrze.png" alt="" className='w-full h-150 object-cover'/></SwiperSlide>
+    <div className="w-full">
 
-    </Swiper>
+      <img
+        src="/ShoeHeroImage.png" // your designed image
+        alt="banner"
+        className="w-full h-[800px] object-cover"
+      />
+
+    </div>
   );
 };
 
-export default Banner
+export default Banner;

@@ -11,7 +11,7 @@ const Newarrival = () => {
   )
 
   return (
-    <div className='px-20 py-20 w-full'>
+    <div className='px-10 py-16 w-full'>
       <div className='mb-8'>
         <h1 className='text-3xl font-bold text-gray-900 '>New Arrivals</h1>
         <p className="text-gray-500">

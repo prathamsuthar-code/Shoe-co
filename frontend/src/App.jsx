@@ -29,13 +29,16 @@ import AdminProducts from "./Admin/Pages/Products"
 import AddProduct from "./Admin/Pages/AddProduct"
 import EditProduct from "./Admin/Pages/EditProduct"
 import ProductView from "./Admin/Pages/ViewProduct"
+import ScrollToTop from "./Components/ScrollToTop"
 
 function App() {
 
   const [isLoggedin, setIsLoggedIn] = useState(localStorage.getItem("access_token"))
 
   return (
+    
     <BrowserRouter>
+    <ScrollToTop />
 
       <Routes>
 
@@ -78,6 +81,7 @@ function App() {
       </Routes>
 
     </BrowserRouter>
+    
   )
 }
 

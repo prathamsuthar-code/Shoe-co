@@ -6,10 +6,14 @@ const cartSchema = new mongoose.Schema({
   productName: String,
   price: Number,
   img: String,
-  quantity: {
-    type: Number,
-    default: 1
-  }
+  quantity: Number
 })
+
+
+cartSchema.index(
+  { userId: 1, productId: 1, size: 1 },
+  { unique: true }
+)
+
 
 export default mongoose.model("Cart", cartSchema)

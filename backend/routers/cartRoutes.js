@@ -5,32 +5,28 @@ const router = express.Router()
 
 // ADD TO CART
 router.post("/add", async (req, res) => {
-  let { userId, productId, productName, price, img} = req.body
-
-  price = Number(price)
-
-  console.log("price", price)
+  let { userId, productId, productName, price, img, size } = req.body
 
   try {
-    const existingItem = await Cart.findOne({ userId, productId })
+    const updatedItem = await Cart.findOneAndUpdate(
+      {
+        userId,
+        productId: String(productId),
+        size
+      },
+      {
+        $inc: { quantity: 1 },
+        $setOnInsert: {
+          productName,
+          price: Number(price),
+          img,
+          size
+        }
+      },
+      { new: true, upsert: true }
+    )
 
-    if (existingItem) {
-      existingItem.quantity += 1
-      await existingItem.save()
-      return res.json(existingItem)
-    }
-
-    const newItem = new Cart({
-      userId,
-      productId,
-      price ,
-      productName,
-      img
-    })
-
-    await newItem.save()
-
-    res.json(newItem)
+    res.json(updatedItem)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }

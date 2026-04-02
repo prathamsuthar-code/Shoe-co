@@ -5,7 +5,7 @@ const CartContext = createContext(null)
 export const CartProvider = ({ children }) => {
 
   const [cartItem, setCartItem] = useState([])
-  const [userId, setUserId] = useState(localStorage.getItem("userId"))
+  const [userId, setUserId] = useState(localStorage.getItem("userId") || "guest123")
 
   const loginUser = (id) => {
     localStorage.setItem("userId", id)
@@ -17,6 +17,16 @@ export const CartProvider = ({ children }) => {
     setUserId(null)
     setCartItem([])
   }
+  useEffect(() => {
+  let id = localStorage.getItem("userId")
+
+  if (!id) {
+    id = "guest_" + Date.now()
+    localStorage.setItem("userId", id)
+  }
+
+  setUserId(id)
+}, [])
 
   useEffect(() => {
     if (!userId) return
@@ -52,7 +62,17 @@ export const CartProvider = ({ children }) => {
     })
 
     const data = await res.json()
-    setCartItem((prev) => [...prev, data])
+    setCartItem((prev) => {
+  const exists = prev.find((item) => item._id === data._id)
+
+  if (exists) {
+    return prev.map((item) =>
+      item._id === data._id ? data : item
+    )
+  } else {
+    return [...prev, data]
+  }
+})
   }
 
   const removeFromCart = async (id) => {
