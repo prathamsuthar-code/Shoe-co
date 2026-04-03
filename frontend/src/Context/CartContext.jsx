@@ -28,6 +28,32 @@ export const CartProvider = ({ children }) => {
   setUserId(id)
 }, [])
 
+  
+
+  const updateQuantity = async (id, action) => {
+  const res = await fetch(`http://localhost:8000/api/cart/update/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ action })
+  })
+
+  const data = await res.json()
+
+  setCartItem((prev) => {
+    if (data.deleted) {
+      return prev.filter((item) => item._id !== id)
+    }
+
+    return prev.map((item) =>
+      item._id === id ? data : item
+    )
+  })
+}
+
+
+
   useEffect(() => {
     if (!userId) return
 
@@ -45,35 +71,40 @@ export const CartProvider = ({ children }) => {
 
   }, [userId])
 
-  const addToCart = async (product) => {
-    const res = await fetch("http://localhost:8000/api/cart/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userId,
-        productId: product.id,
-        productName: product.productName,
-        brandName: product.brandName,
-        price: product.sellingPrice,
-        img: product.img
-      })
+
+  //Add to cart
+  const addToCart = async (product, qty = 1) => {
+
+  const res = await fetch("http://localhost:8000/api/cart/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      userId,
+      productId: product.id,
+      productName: product.productName,
+      brandName: product.brandName,
+      price: product.sellingPrice,
+      img: product.img,
+      quantity: qty // ✅ send qty
     })
+  })
 
-    const data = await res.json()
-    setCartItem((prev) => {
-  const exists = prev.find((item) => item._id === data._id)
+  const data = await res.json()
 
-  if (exists) {
-    return prev.map((item) =>
-      item._id === data._id ? data : item
-    )
-  } else {
-    return [...prev, data]
-  }
-})
-  }
+  setCartItem((prev) => {
+    const exists = prev.find((item) => item._id === data._id)
+
+    if (exists) {
+      return prev.map((item) =>
+        item._id === data._id ? data : item
+      )
+    } else {
+      return [...prev, data]
+    }
+  })
+}
 
   const removeFromCart = async (id) => {
     await fetch(`http://localhost:8000/api/cart/remove/${id}`, {
@@ -96,6 +127,7 @@ export const CartProvider = ({ children }) => {
         cartItem,
         addToCart,
         removeFromCart,
+        updateQuantity,
         clearCart,
         loginUser,
         logoutUser
@@ -103,7 +135,9 @@ export const CartProvider = ({ children }) => {
     >
       {children}
     </CartContext.Provider>
+    
   )
+  
 }
 
 export const useCart = () => useContext(CartContext)

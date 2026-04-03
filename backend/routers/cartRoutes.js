@@ -5,7 +5,8 @@ const router = express.Router()
 
 // ADD TO CART
 router.post("/add", async (req, res) => {
-  let { userId, productId, productName, price, img, size } = req.body
+ 
+  let { userId, productId, productName, price, img, size, quantity  } = req.body
 
   try {
     const updatedItem = await Cart.findOneAndUpdate(
@@ -15,7 +16,7 @@ router.post("/add", async (req, res) => {
         size
       },
       {
-        $inc: { quantity: 1 },
+        $inc: { quantity: Number(quantity) || 1 },
         $setOnInsert: {
           productName,
           price: Number(price),
@@ -30,6 +31,7 @@ router.post("/add", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
+  
 })
 
 // REMOVE ITEM FROM CART
@@ -58,6 +60,37 @@ router.delete("/remove/:id", async (req, res) => {
       error: error.message
     })
 
+  }
+})
+
+// UPDATE QUANTITY
+router.patch("/update/:id", async (req, res) => {
+  const { action } = req.body // "inc" or "dec"
+
+  try {
+    const item = await Cart.findById(req.params.id)
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" })
+    }
+
+    if (action === "inc") {
+      item.quantity += 1
+    } else if (action === "dec") {
+      item.quantity -= 1
+    }
+
+    // 🧠 auto delete if qty 0
+    if (item.quantity <= 0) {
+      await Cart.findByIdAndDelete(req.params.id)
+      return res.json({ deleted: true })
+    }
+
+    await item.save()
+    res.json(item)
+
+  } catch (error) {
+    res.status(500).json({ error: error.message })
   }
 })
 
@@ -102,5 +135,6 @@ router.delete("/clear/:userId", async (req, res) => {
   }
 
 })
+
 
 export default router

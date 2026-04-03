@@ -3,7 +3,7 @@ import { useCart } from "../Context/CartContext";
 import { NavLink } from "react-router-dom";
 
 const Cart = () => {
-  const { cartItem, removeFromCart } = useCart();
+  const { cartItem, removeFromCart, updateQuantity } = useCart();
 
   const handleRemove = (id) => {
   const el = document.getElementById(`cart-item-${id}`);
@@ -71,7 +71,30 @@ const Cart = () => {
         Remove
       </button>
     </div>
-    
+    <div className="mt-2 flex items-center gap-2">
+
+  {/* DECREASE */}
+  <button
+    onClick={() => updateQuantity(item._id, "dec")}
+    className="w-6 h-6 border border-gray-300 text-xs hover:bg-gray-100"
+  >
+    −
+  </button>
+
+  {/* QTY */}
+  <span className="text-sm w-6 text-center">
+    {item.quantity}
+  </span>
+
+  {/* INCREASE */}
+  <button
+    onClick={() => updateQuantity(item._id, "inc")}
+    className="w-6 h-6 border border-gray-300 text-xs hover:bg-gray-100"
+  >
+    +
+  </button>
+
+</div>
 
     {/* PRICE */}
     <div className="text-sm font-medium">

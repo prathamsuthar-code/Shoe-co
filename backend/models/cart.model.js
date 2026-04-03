@@ -5,13 +5,14 @@ const cartSchema = new mongoose.Schema({
   productId: String,
   productName: String,
   price: Number,
+  size: String,
   img: String,
   quantity: Number
 })
 
 
 cartSchema.index(
-  { userId: 1, productId: 1, size: 1 },
+  { userId: 1, productId: 1 },
   { unique: true }
 )
 
